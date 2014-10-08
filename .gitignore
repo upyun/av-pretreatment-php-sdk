@@ -1,0 +1,4 @@
+.idea
+tests/
+composer.lock
+phpunit.xml

@@ -29,28 +29,28 @@ $ids = $sugar->request($data);
 
 2. 利用`Tasks`类，对同一空间的多个视频作处理
 ```php
-$tasks = new \Sugar\Tasks('stash', 'http://callback/', new AvPretreatment('stash', '123456789'));
-$data =array(
-    array(
-        'type' => 'hls',
-        'hls_time' => 6,
-        'bitrate' => '500',
-        'rotate' =>  'auto',
-        'format' => 'mp4',
-    ),
-    array(
-        'type' => 'thumbnail',
-        'thumb_single' => false,
-        'thumb_amount' => 100,
-        'format' => 'png'
-    ),
-);
-$tasks->addTasks($data);
-foreach($videoFiles as $url) {
-    $tasks->setSource('/video/20130514_190031.mp4');
-    $tasks->run();
-    $ids[$url] = $tasks->getTaskIds();
-}
+    $tasks = new \Sugar\Tasks('stash', 'http://callback/', new AvPretreatment('stash', '123456789'));
+    $data =array(
+        array(
+            'type' => 'hls',
+            'hls_time' => 6,
+            'bitrate' => '500',
+            'rotate' =>  'auto',
+            'format' => 'mp4',
+        ),
+        array(
+            'type' => 'thumbnail',
+            'thumb_single' => false,
+            'thumb_amount' => 100,
+            'format' => 'png'
+        ),
+    );
+    $tasks->addTasks($data);
+    foreach($videoFiles as $url) {
+        $tasks->setSource('/video/20130514_190031.mp4');
+        $tasks->run();
+        $ids[$url] = $tasks->getTaskIds();
+    }
 ```
 
 #### 回调地址的验证

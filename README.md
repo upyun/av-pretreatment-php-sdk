@@ -23,8 +23,12 @@ $data = array(
         ),
     )
 );
-//返回对应的任务ids
-$ids = $sugar->request($data);
+try {
+    //返回对应的任务ids
+    $ids = $sugar->request($data);
+} catch(\Exception $e) {
+    echo "request failed:", $e->getMessage();
+}
 ```
 
 2. 利用`Tasks`类，对同一空间的多个视频作处理
@@ -48,8 +52,7 @@ $ids = $sugar->request($data);
     $tasks->addTasks($data);
     foreach($videoFiles as $url) {
         $tasks->setSource('/video/20130514_190031.mp4');
-        $tasks->run();
-        $ids[$url] = $tasks->getTaskIds();
+        $ids[$url] = $tasks->run();
     }
 ```
 

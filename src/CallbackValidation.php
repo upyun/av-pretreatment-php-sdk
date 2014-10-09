@@ -42,7 +42,10 @@ class CallbackValidation {
     {
         $this->params = array();
         foreach($keys as $key) {
-            $this->params[$key] = $this->getParamFromPost($key);
+            $value = $this->getParamFromPost($key);
+            if($value !== null) {
+                $this->params[$key] = $value;
+            }
         }
     }
 

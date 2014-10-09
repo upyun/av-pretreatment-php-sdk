@@ -1,6 +1,7 @@
 ### 视频预处理Sugar php-sdk
 #### 示例:
 1. `AvPretreatment`类使用示例
+
 ```php
 $sugar = new \Sugar\AvPretreatment('stash', '123456789');//操作员的帐号密码
 $data = array(

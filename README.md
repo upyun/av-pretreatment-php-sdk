@@ -26,6 +26,7 @@ $data = array(
 //返回对应的任务ids
 $ids = $sugar->request($data);
 ```
+
 2. 利用`Tasks`类，对同一空间的多个视频作处理
 ```php
 $tasks = new \Sugar\Tasks('stash', 'http://callback/', new AvPretreatment('stash', '123456789'));
@@ -51,6 +52,7 @@ foreach($videoFiles as $url) {
     $ids[$url] = $tasks->getTaskIds();
 }
 ```
+
 #### 回调地址的验证
 在回调代码中，添加如下验证
 ```

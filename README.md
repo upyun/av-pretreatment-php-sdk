@@ -1,5 +1,5 @@
 ### 视频预处理Sugar php-sdk
-#### 示例:
+#### 请求预处理示例:
 1. `AvPretreatment`类使用示例
 ```php
 $sugar = new \Sugar\AvPretreatment('stash', '123456789');//操作员的帐号密码
@@ -53,7 +53,7 @@ $ids = $sugar->request($data);
     }
 ```
 
-#### 回调地址的验证
+#### 回调地址验证示例:
 在回调代码中，添加如下验证
 ```
 $validation = new \Sugar\CallbackValidation(new \Sugar\AvPretreatment('stash', '123456789'));

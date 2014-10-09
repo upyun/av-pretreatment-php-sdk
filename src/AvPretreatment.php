@@ -89,10 +89,11 @@ class AvPretreatment {
      * @param $data
      * @return array: 接口返回的每个任务对应的ID
      */
-    public function request($data)
+    public function request($data, $retryTimes = 3)
     {
         $data['tasks'] = $this->processTasksData($data['tasks']);
         $sign = $this->createSign($data);
+
         $ch = curl_init($this->apiUrl);
         $headers = array(
             "Authorization:UPYUN {$this->operatorName}:$sign"
@@ -103,10 +104,16 @@ class AvPretreatment {
             CURLOPT_HTTPHEADER => $headers,
             CURLOPT_RETURNTRANSFER => true,
         );
-
         curl_setopt_array($ch, $options);
-        $result = curl_exec($ch);
+
+        $times = 0;
+        do {
+            $result = curl_exec($ch);
+            $times++;
+        } while($result === false && $times < $retryTimes);
+
         $this->parseResult($result, $ch);
+        curl_close($ch);
         return $this->getTaskIds();
     }
 

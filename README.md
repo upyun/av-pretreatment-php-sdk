@@ -1,5 +1,5 @@
 ### 视频预处理Sugar php-sdk
-示例:
+#### 示例:
 1. `AvPretreatment`类使用示例
 ```php
 $sugar = new \Sugar\AvPretreatment('stash', '123456789');//操作员的帐号密码
@@ -50,5 +50,15 @@ foreach($videoFiles as $url) {
     $tasks->setSource('/video/20130514_190031.mp4');
     $tasks->run();
     $ids[$url] = $tasks->getTaskIds();
+}
+```
+#### 回调地址的验证
+在回调代码中，添加如下验证
+```
+$validation = new \Sugar\CallbackValidation(new \Sugar\AvPretreatment('stash', '123456789'));
+if($validation->verifySign()) {
+    echo '验证成功';
+} else {
+    echo '验证失败';
 }
 ```

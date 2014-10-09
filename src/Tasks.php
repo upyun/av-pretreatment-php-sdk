@@ -91,7 +91,7 @@ class Tasks {
             'notify_url'  => $this->notifyUrl,
             'tasks'       => $this->tasks,
         );
-        $this->sugar->request($data);
+        return $this->sugar->request($data);
     }
 
     /**

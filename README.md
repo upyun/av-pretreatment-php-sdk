@@ -1,7 +1,6 @@
 ### 视频预处理Sugar php-sdk
 #### 示例:
 1. `AvPretreatment`类使用示例
-
 ```php
 $sugar = new \Sugar\AvPretreatment('stash', '123456789');//操作员的帐号密码
 $data = array(
@@ -27,9 +26,7 @@ $data = array(
 //返回对应的任务ids
 $ids = $sugar->request($data);
 ```
-
 2. 利用`Tasks`类，对同一空间的多个视频作处理
-
 ```php
 $tasks = new \Sugar\Tasks('stash', 'http://callback/', new AvPretreatment('stash', '123456789'));
 $data =array(

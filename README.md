@@ -1,7 +1,7 @@
 ### 视频预处理Sugar php-sdk
 示例:
 1. `AvPretreatment`类使用示例
-```
+```php
 $sugar = new \Sugar\AvPretreatment('stash', '123456789');//操作员的帐号密码
 $data = array(
     'bucket_name' => 'stash',                   //空间名
@@ -27,7 +27,8 @@ $data = array(
 $ids = $sugar->request($data);
 ```
 2. 利用`Tasks`类，对同一空间的多个视频作处理
-```
+
+```php
 $tasks = new \Sugar\Tasks('stash', 'http://callback/', new AvPretreatment('stash', '123456789'));
 $data =array(
     array(

@@ -69,21 +69,25 @@ if($validation->verifySign()) {
 
 ## 安装
 #### 通过composer安装
-1. 安装`composer`
-`curl -s https://getcomposer.org/installer | php`
-`mv composer.phar /usr/local/bin/composer`
-2. 在你的项目根目录下创建`composer.json`，并添加如下内容
+安装composer
 ```
-{
-     "repositories": [
-        {   
-            "type": "vcs",
-            "url": "https://github.com/upyun/sugar-php-sdk.git"
+curl -s https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer
+```
+
+在你的项目根目录下创建`composer.json`，并添加如下内容
+```
+    {
+        "repositories": [
+            {   
+                "type": "vcs",
+                "url": "https://github.com/upyun/sugar-php-sdk.git"
+            }   
+        ],  
+        "require":{
+            "upyun/sugar-php-sdk":"dev-master"
         }   
-     ],  
-    "require":{
-        "upyun/sugar-php-sdk":"dev-master"
-    }   
-}
+    }
 ```
-3. 运行 `composer install`
+
+运行 `composer install`

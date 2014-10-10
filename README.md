@@ -1,4 +1,4 @@
-### 视频预处理Sugar php-sdk
+## 视频预处理Sugar php-sdk
 #### 请求预处理示例:
 1. `AvPretreatment`类使用示例
 ```php
@@ -58,7 +58,7 @@
 
 #### 回调地址验证示例:
 在回调代码中，添加如下验证
-```
+```php
 $validation = new \Sugar\CallbackValidation(new \Sugar\AvPretreatment('stash', '123456789'));
 if($validation->verifySign()) {
     echo '验证成功';
@@ -66,3 +66,24 @@ if($validation->verifySign()) {
     echo '验证失败';
 }
 ```
+
+## 安装
+#### 通过composer安装
+1. 安装`composer`
+`curl -s https://getcomposer.org/installer | php`
+`mv composer.phar /usr/local/bin/composer`
+2. 在你的项目根目录下创建`composer.json`，并添加如下内容
+```
+{
+     "repositories": [
+        {   
+            "type": "vcs",
+            "url": "https://github.com/upyun/sugar-php-sdk.git"
+        }   
+     ],  
+    "require":{
+        "upyun/sugar-php-sdk":"dev-master"
+    }   
+}
+```
+3. 运行 `composer install`

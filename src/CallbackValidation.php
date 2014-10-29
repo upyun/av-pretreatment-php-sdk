@@ -21,6 +21,7 @@ class CallbackValidation {
             'bucket_name',
             'status_code',
             'path',
+            'description',
             'task_id',
             'info',
             'signature',

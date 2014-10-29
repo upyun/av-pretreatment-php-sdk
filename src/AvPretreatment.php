@@ -43,6 +43,9 @@ class AvPretreatment {
             ksort($data);
             $string = '';
             foreach($data as $k => $v) {
+                if(is_array($v)) {
+                    $v = implode('', $v);
+                }
                 $string .= "$k$v";
             }
             $sign = $this->operatorName.$string.md5($this->operatorPassword);

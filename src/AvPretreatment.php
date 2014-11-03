@@ -9,7 +9,7 @@ class AvPretreatment {
     /**
      * @var string: 请求接口地址
      */
-    protected $apiUrl;
+    protected $apiUrls;
     /**
      * @var array: 接口返回的任务ID数组
      */
@@ -25,11 +25,16 @@ class AvPretreatment {
     private $operatorPassword;
 
 
-    public function __construct($operatorName, $operatorPassword, $url = 'http://p0.api.upyun.com/pretreatment/')
+    public function __construct($operatorName, $operatorPassword)
     {
         $this->operatorName = $operatorName;
         $this->operatorPassword = $operatorPassword;
-        $this->apiUrl = $url;
+        $this->apiUrls = array(
+            //视频预处理接口
+            'pretreatment' => 'http://p0.api.upyun.com/pretreatment/',
+            //查询视频处理状态
+            'status' => 'http://p0.api.upyun.com/status/'
+        );
     }
 
     /**
@@ -88,25 +93,55 @@ class AvPretreatment {
     }
 
     /**
-     * 请求接口
-     * @param $data
+     * 请求 pretreatment 接口
+     * @param array $data
+     * <code>
+     * $data = array(
+     *      'bucket_name' => 'stash',  //空间名
+     *      'source' => '/path/yourvideo', //视频路径
+     *      'notify_url' => 'http://callback/', //回调地址
+     *      'tasks' => $tasks //任务
+     * )
+     * </code>
      * @return array: 接口返回的每个任务对应的ID
      */
-    public function request($data, $retryTimes = 3)
+    public function request($data)
     {
         $data['tasks'] = $this->processTasksData($data['tasks']);
-        $sign = $this->createSign($data);
+        $this->curl($data, $this->apiUrls['pretreatment'], 'POST');
+        return $this->getTaskIds();
+    }
 
-        $ch = curl_init($this->apiUrl);
+
+    protected function curl($data, $url, $method = 'GET', $retryTimes = 3)
+    {
+        $sign = $this->createSign($data);
+        $data = http_build_query($data);
+        $ch = curl_init();
         $headers = array(
             "Authorization:UPYUN {$this->operatorName}:$sign"
         );
-        $options = array(
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => http_build_query($data),
-            CURLOPT_HTTPHEADER => $headers,
-            CURLOPT_RETURNTRANSFER => true,
-        );
+
+        $options = array();
+        switch(strtoupper($method)) {
+            case 'GET':
+                $url .= '?' . $data;
+                $options = array(
+                    CURLOPT_URL => $url,
+                    CURLOPT_HTTPHEADER => $headers,
+                    CURLOPT_RETURNTRANSFER => true
+                );
+                break;
+            case 'POST':
+                $options = array(
+                    CURLOPT_URL => $url,
+                    CURLOPT_POST => true,
+                    CURLOPT_POSTFIELDS => $data,
+                    CURLOPT_HTTPHEADER => $headers,
+                    CURLOPT_RETURNTRANSFER => true
+                );
+                break;
+        }
         curl_setopt_array($ch, $options);
 
         $times = 0;
@@ -117,7 +152,39 @@ class AvPretreatment {
 
         $this->parseResult($result, $ch);
         curl_close($ch);
-        return $this->getTaskIds();
+    }
+
+    /**
+     * 获取任务状态
+     *
+     * @param $taskIds : 任务id, 一次最多20个,e.g ebc6b85f55b547e18a07cccd867fb961,bdcabe55f75b547e18a07cccd867fb961
+     * @param $bucket_name : 空间名
+     * @throws \Exception
+     * @return array
+     * <code>
+     * array(
+     * 'tasks' => array(
+     *     'ebc6b85f55b547e18a07cccd867fb961' => '100'
+     *   ),
+     *   'count' => 1
+     * )
+     * </code>
+     */
+    public function getTasksStatus($taskIds, $bucket_name)
+    {
+        if(is_string($taskIds)) {
+            $taskIds = explode(',', $taskIds);
+        }
+
+        if(is_array($taskIds) && count($taskIds) <= 20) {
+            $taskIds = implode(',', $taskIds);
+        } else {
+            throw new \Exception('一次最多查询20个任务');
+        }
+        $data['task_ids'] = $taskIds;
+        $data['bucket_name'] = $bucket_name;
+        $this->curl($data, $this->apiUrls['status'], 'GET');
+        return $this->taskIds;
     }
 
     /**

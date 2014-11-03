@@ -26,6 +26,12 @@ class Tasks {
      */
     protected $source;
 
+    /**
+     * @var array: 任务ID
+     */
+    protected $taskIds;
+    public  $test;
+
     public function __construct($bucketName, $notifyUrl, $avPretreatment)
     {
         $this->bucketName = $bucketName;
@@ -63,6 +69,7 @@ class Tasks {
     public function resetTasks()
     {
         $this->tasks = array();
+        $this->taskIds = array();
     }
 
     public function setSource($source)
@@ -91,7 +98,8 @@ class Tasks {
             'notify_url'  => $this->notifyUrl,
             'tasks'       => $this->tasks,
         );
-        return $this->sugar->request($data);
+        $this->taskIds = $this->sugar->request($data);
+        return $this->taskIds;
     }
 
     /**
@@ -101,5 +109,23 @@ class Tasks {
     public function getTaskIds()
     {
         return $this->sugar->getTaskIds();
+    }
+
+
+    /**
+     * 获取任务状态
+     * @return array
+     * <code>
+     * array(
+         'tasks' => array(
+     *     'ebc6b85f55b547e18a07cccd867fb961' => '100'
+     *   ),
+     *   'count' => 1
+     * )
+     * </code>
+     */
+    public function getTasksStatus()
+    {
+        return $this->sugar->getTasksStatus($this->taskIds, $this->bucketName);
     }
 }

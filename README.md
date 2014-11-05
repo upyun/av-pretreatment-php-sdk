@@ -9,6 +9,9 @@
   - [`AvPretreatment` 类提交视频预处理请求](#avpretreatment)
   - [`Tasks` 类 批量处理同一个空间的多个视频](#tasks)
   - [回调地址验证示例](#validate)
+- [贡献代码](#contribute)
+- [社区](#community)
+- [许可证](#license)
 
 <a name="install"></a>
 ## 安装说明
@@ -145,3 +148,21 @@ if($validation->verifySign()) {
 }
 ```
 
+<a name="contribute"></a>
+## 贡献代码
+ 1. Fork
+ 2. 为新特性创建一个新的分支
+ 3. 发送一个 pull request 到 develop 分支
+
+<a name="community"></a>
+## 社区
+
+ - [UPYUN问答社区](http://segmentfault.com/upyun)
+ - [UPYUN微博](http://weibo.com/upaiyun)
+
+<a name="license"></a>
+## 许可证
+
+UPYUN 视频处理PHP-SDK基于 MIT 开源协议
+
+<http://www.opensource.org/licenses/MIT>

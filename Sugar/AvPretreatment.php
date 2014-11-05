@@ -1,10 +1,33 @@
 <?php
 /**
- * 又拍云视频预处理
+ * UpYun视频预处理 PHP-SDK
+ *
+ * MIT LICENSE
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 namespace Sugar;
 
-
+/**
+ * 又拍云视频预处理
+ */
 class AvPretreatment {
     /**
      * @var string: 请求接口地址
@@ -106,7 +129,13 @@ class AvPretreatment {
      *      'tasks' => $tasks //任务
      * )
      * </code>
-     * @return array: 接口返回的每个任务对应的ID
+     * @return array: 接口返回的每个任务对应的ID, 格式如下
+     * <code>
+     * array(
+            0 => "dc3ac492f71adb24a6f33eea9d7cd589",
+            1 => "afbfd22c727fb20f80df6158c690556c"
+       )
+     * </code>
      */
     public function request($data)
     {
@@ -163,13 +192,13 @@ class AvPretreatment {
      * @param $taskIds : 任务id, 一次最多20个,e.g ebc6b85f55b547e18a07cccd867fb961,bdcabe55f75b547e18a07cccd867fb961
      * @param $bucket_name : 空间名
      * @throws \Exception
-     * @return array
+     * @return array: 格式如下
      * <code>
      * array(
      * 'tasks' => array(
-     *     'ebc6b85f55b547e18a07cccd867fb961' => '100'
-     *   ),
-     *   'count' => 1
+     *     'ebc6b85f55b547e18a07cccd867fb961' => '100',
+     *     '52e27dbbe3e81aa4caf3d9c9e0da4f39' => null //为空表示任务不存在
+     *   )
      * )
      * </code>
      */

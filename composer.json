@@ -3,13 +3,13 @@
     "version":"1.0.0",
     "dist":{
         "type":"vcs",
-        "url":"https://github.com/upyun/sugar-php-sdk.git"
+        "url":"https://github.com/upyun/av-pretreatment-php-sdk.git"
     },
     "require": {
         "php": ">=5.3.0",
         "ext-fileinfo": "*"
     },
     "autoload": {
-        "psr-4": { "Sugar\\": "src/" }
+        "psr-4": { "Sugar\\": "Sugar/" }
     }
 }

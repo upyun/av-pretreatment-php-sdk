@@ -47,6 +47,7 @@ class AvPretreatmentTest extends PHPUnit_Framework_TestCase {
         $status = $sugar->getTasksStatus($this->taskids, $bucketName);
 
         $this->assertEquals(2, count($status['tasks']));
+        $this->assertEquals(32, strlen($sugar->getXRequestId()));
         $this->assertEquals(true, isset($status['tasks']['acc510e6885e42d366125ab439d3da49'])
             && $status['tasks']['acc510e6885e42d366125ab439d3da49'] == 100);
     }

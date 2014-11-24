@@ -46,7 +46,10 @@ class AvPretreatment {
      * @var string:操作员密码
      */
     private $operatorPassword;
-
+    /**
+     * @var string: UPYUN 请求唯一id, 出现错误时, 可以将该id报告给 UPYUN,进行调试
+     */
+    protected $x_request_id;
 
     public function __construct($operatorName, $operatorPassword)
     {
@@ -161,7 +164,8 @@ class AvPretreatment {
                 $options = array(
                     CURLOPT_URL => $url,
                     CURLOPT_HTTPHEADER => $headers,
-                    CURLOPT_RETURNTRANSFER => true
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_HEADER => true,
                 );
                 break;
             case 'POST':
@@ -170,7 +174,8 @@ class AvPretreatment {
                     CURLOPT_POST => true,
                     CURLOPT_POSTFIELDS => $data,
                     CURLOPT_HTTPHEADER => $headers,
-                    CURLOPT_RETURNTRANSFER => true
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_HEADER => true,
                 );
                 break;
         }
@@ -182,7 +187,14 @@ class AvPretreatment {
             $times++;
         } while($result === false && $times < $retryTimes);
 
-        $this->parseResult($result, $ch);
+        if($result === false) {
+            throw new \Exception("curl failed");
+        }
+
+        list($headers, $body) = $this->parseHttpResponse($result);
+        $this->x_request_id = isset($headers['X-Request-Id']) ? $headers['X-Request-Id'] : '';
+
+        $this->parseResult($body, $ch);
         curl_close($ch);
     }
 
@@ -232,7 +244,7 @@ class AvPretreatment {
             $this->taskIds = json_decode($result, true);
         } else {
             $this->taskIds = null;
-            throw new \Exception(sprintf('request failed!HTTP_CODE:%s, %s', $httpCode, $result));
+            throw new \Exception(sprintf('request failed!HTTP_CODE:%s, %s', $httpCode, $result . " X-Request-Id:" . $this->getXRequestId()));
         }
     }
 
@@ -243,5 +255,30 @@ class AvPretreatment {
     public function getTaskIds()
     {
         return is_array($this->taskIds) ? $this->taskIds : array();
+    }
+
+    public function getXRequestId()
+    {
+        return $this->x_request_id;
+    }
+
+    private function parseHttpResponse($response) {
+        if(!$response) {
+            return false;
+        }
+
+        $response_array = explode("\r\n\r\n", $response, 2);
+        $header_string = $response_array[0];
+        $body = isset($response_array[1]) ? $response_array[1] : '';
+
+        $headers = array();
+        foreach (explode("\n", $header_string) as $header) {
+            $headerArr = explode(':', $header, 2);
+            if(isset($headerArr[1])) {
+                $key = $headerArr[0];
+                $headers[$key] = trim($headerArr[1]);
+            }
+        }
+        return array($headers, $body);
     }
 }

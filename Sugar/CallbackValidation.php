@@ -59,7 +59,7 @@ class CallbackValidation {
 
     protected function getParamFromPost($key)
     {
-        return isset($_POST[$key]) ? trim($_POST[$key]) : null;
+        return isset($_POST[$key]) ? $this->trim($_POST[$key]) : null;
     }
 
     protected function setParamsByPost($keys)
@@ -80,7 +80,6 @@ class CallbackValidation {
     public function verifySign()
     {
         $data = $this->params;
-
         if(isset($data['signature'])) {
             unset($data['signature']);
             return $this->params['signature'] === $this->sugar->createSign($data);
@@ -92,5 +91,13 @@ class CallbackValidation {
         }
 
         return false;
+    }
+
+    protected function trim($data) {
+       if(is_array($data)) {
+           return array_map(array($this, 'trim'), $data);
+       } else {
+           return trim($data);
+       }
     }
 }

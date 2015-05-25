@@ -79,13 +79,13 @@ $data = array(
             'hls_time' => 6,
             'bitrate' => '500',
             'rotate' =>  'auto',
-            'format' => 'mp4',
+            'thumb_format' => 'mp4',
         ),
         array(
             'type' => 'thumbnail',
             'thumb_single' => false,
             'thumb_amount' => 100,
-            'format' => 'png'
+            'thumb_format' => 'png'
         ),
     )
 );
@@ -114,13 +114,13 @@ $data =array(
         'hls_time' => 6,
         'bitrate' => '500',
         'rotate' =>  'auto',
-        'format' => 'mp4',
+        'thumb_format' => 'mp4',
     ),
     array(
         'type' => 'thumbnail',
         'thumb_single' => false,
         'thumb_amount' => 100,
-        'format' => 'png'
+        'thumb_format' => 'png'
     ),
 );
 $tasks->addTasks($data);

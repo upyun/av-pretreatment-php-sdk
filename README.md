@@ -1,5 +1,9 @@
 # 又拍云视频预处理 PHP-SDK
+
+不推荐再使用，功能已经集成到 https://github.com/upyun/php-sdk
+
 ![build](https://api.travis-ci.org/upyun/av-pretreatment-php-sdk.svg)
+
 ## 目录
 - [安装说明](#install)
   - [要求](#require)
